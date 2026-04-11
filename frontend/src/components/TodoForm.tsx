@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { createTodo } from "../services/api";
 
 interface AddTodoProps {
@@ -7,8 +7,13 @@ interface AddTodoProps {
 
 const TodoForm = ({ onTodoCreated }: AddTodoProps) => {
   const [title, setTitle] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const buttonRef = () => {
+    inputRef.current?.focus();
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!title.trim()) return;
@@ -23,6 +28,7 @@ const TodoForm = ({ onTodoCreated }: AddTodoProps) => {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
       <input
+        ref={inputRef}
         type="text"
         placeholder="Add a task..."
         value={title}
@@ -40,7 +46,7 @@ const TodoForm = ({ onTodoCreated }: AddTodoProps) => {
     "
       />
 
-      <button
+      <button onClick={buttonRef}
         type="submit"
         className="
       bg-blue-500 
