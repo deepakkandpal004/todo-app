@@ -1,4 +1,6 @@
-const errorMiddleware = (err, req, res, next) => {
+import { NextFunction, Request, Response } from "express";
+
+const errorMiddleware = (err: Error, req: Request, res: Response, next: NextFunction): void => {
     const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
 
     res.status(statusCode);

@@ -1,6 +1,7 @@
+import { RequestHandler } from "express";
 import { body } from "express-validator";
 
-export const createTodoValidator = [
+export const createTodoValidator: RequestHandler[] = [
 
   body("title")
     .notEmpty()

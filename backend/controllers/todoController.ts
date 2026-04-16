@@ -1,19 +1,20 @@
-import Todo from "../models/todoModel.js";
-import asyncHandler from "../utils/asyncHandler.js";
+import Todo from "../models/todoModel";
+import asyncHandler from "../utils/asyncHandler";
+import { Request, Response } from "express"
 
-export const createTodo = asyncHandler(async (req, res) => {
-  const { title } = req.body;
-
-  const todo = await Todo.create({ title });
+export const createTodo = asyncHandler(async (req: Request, res: Response): Promise<void>  => {
+  const { title }: { title : string} = req.body;
 
   if (!title) {
     res.status(400);
     throw new Error("Title is required");
   }
+  const todo = await Todo.create({ title });
+
   res.status(201).json({ success: true, data: todo });
 });
 
-export const getTodos = asyncHandler(async (req, res) => {
+export const getTodos = asyncHandler(async (req: Request, res: Response): Promise<void> => {
   const todos = await Todo.find();
 
   res.status(200).json({
@@ -23,8 +24,8 @@ export const getTodos = asyncHandler(async (req, res) => {
   });
 });
 
-export const getTodoById = asyncHandler(async (req, res) => {
-  const { id } = req.params;
+export const getTodoById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params as { id: string };
 
   const todo = await Todo.findById(id);
 
@@ -35,8 +36,8 @@ export const getTodoById = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, data: todo });
 });
 
-export const updateTodo = asyncHandler(async (req, res) => {
-  const { id } = req.params;
+export const updateTodo = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params as { id: string };
 
   const updatedTodo = await Todo.findByIdAndUpdate(id, req.body, {
     new: true,
@@ -50,8 +51,8 @@ export const updateTodo = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, data: updatedTodo });
 });
 
-export const deleteTodo = asyncHandler(async (req, res) => {
-  const { id } = req.params;
+export const deleteTodo = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params as { id: string };
 
   const todo = await Todo.findByIdAndDelete(id);
 
